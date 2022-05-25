@@ -4,7 +4,7 @@ import 'package:flutter/material.dart'; //base package for constructing app
 //unused if ever written before using it in the code of the body.
 import 'package:syncfusion_flutter_charts/charts.dart'; //syncfusion chart package to implement charts in the app
 import 'package:http/http.dart' as http; // This package contains a set of high-level functions and classes that make it easy to consume HTTP resources.
-
+String s ='https://api.thingspeak.com/channels/1721182/feeds.json?api_key=MQFPBQZ78M4E1F4T&results=3';
 
 class SecondPage extends StatefulWidget {                                    //
   const SecondPage({Key? key, required this.title}) : super(key: key);       // Those lines are for creating the page
@@ -31,6 +31,7 @@ class _SecondPageState extends State<SecondPage> {
     // by the _incrementCounter method above.
 
     return Scaffold(
+
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -109,7 +110,7 @@ class _SecondPageState extends State<SecondPage> {
 
 //Retrieving raw data from the Json
 Future <List<ArduinoData>> getJsonFromThingspeakRestAPI() async {
-  String url = "https://api.thingspeak.com/channels/1728190/feeds.json?results=2";
+  String url = s;
   http.Response response = await http.get(Uri.parse(url));
 
   Map<String, dynamic> user = jsonDecode(response.body);
@@ -118,9 +119,10 @@ Future <List<ArduinoData>> getJsonFromThingspeakRestAPI() async {
   for (var element in user['feeds']){
     data.add(ArduinoData.fromJson(element));
   }
-
   return data;
 }
+
+
 
 //Creating a new class to implement a line chart
 class ArduinoData{
@@ -136,3 +138,4 @@ class ArduinoData{
     );
   }
 }
+

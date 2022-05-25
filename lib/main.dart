@@ -1,6 +1,10 @@
 import 'package:app/second.dart'; //Importing second.dart lib/page so as to link the two pages (codes at line 80 onwards)
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';//Adding the google map package to implement the map
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+double a = -20.2345422832;
+double b = 57.4963461639;
 
 
 void main() {
@@ -27,7 +31,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.deepPurple,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'MyHomePage'),
     );
   }
 }
@@ -51,10 +55,47 @@ class MyHomePage extends StatefulWidget {
 }
 
 
+//extracting data for location before creating the map
+Future <List<Location>> getJsonFromThingspeaklocation() async {
+  String url = "https://api.thingspeak.com/channels/1728190/feeds.json?results=2";
+  http.Response response = await http.get(Uri.parse(url));
+
+  Map<String, dynamic> user = jsonDecode(response.body);
+
+  List<Location> loc = [];
+  for (var element in user['channel']){
+    loc.add(Location.fromJson(element));
+  }
+  return loc;
+}
+
+//Implementation of class to map json (Arduino location) values to variables
+class Location{
+  Location(this.latitude, this.longitude);
+  late String latitude;
+  late String longitude;
+
+  //mapping the jsonbody retrieved to the class objects (for location)
+  factory Location.fromJson(Map<String, dynamic> parsedJson) {
+    return Location(
+        parsedJson['latitude'],
+        parsedJson['longitude'],
+
+    );
+  }
+}
+
+/*var a = Location('latitude', 'longitude').latitude;
+double b = double.parse(a);
+
+var c = Location('latitude', 'longitude').longitude;
+double d = double.parse(c);*/
+
+
 class _MyHomePageState extends State<MyHomePage> {
   late GoogleMapController mapController;
 
-  late LatLng _center = const LatLng(-20.2345422832002, 57.4963461639205); //I had changed this from final to late
+  late LatLng _center = LatLng (a,b); //I had changed this from final to late
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -73,6 +114,48 @@ class _MyHomePageState extends State<MyHomePage> {
     //This line below will create a Scaffold widget which can be used to display the graph
 
     return Scaffold(
+      drawer: Drawer(
+          child: ListView(
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple,
+                ),
+                child: Text('Choose your preferred location', style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+              ),
+              ListTile(
+                title: const Text('UoM'),
+                onTap: () {
+                  a = -20.2345422832;
+                  b = 57.4963461639;
+                  s ='https://api.thingspeak.com/channels/1721182/feeds.json?api_key=MQFPBQZ78M4E1F4T&results=3';
+                  // Update the state of the app.
+                  // ...
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const MyHomePage(title: 'MyHomePage');
+                  }));
+                },
+              ),
+              ListTile(
+                title: const Text('St.Pierre'),
+                onTap: () {
+                  a = 45.521563;
+                  b = -122.677433;
+                  s ='https://api.thingspeak.com/channels/1721182/feeds.json?api_key=MQFPBQZ78M4E1F4T&results=7';
+                  // Update the state of the app.
+                  // ...
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const MyHomePage(title: 'MyHomePage');
+                  }));
+
+                },
+              ),
+            ],
+          ),// Populate the Drawer in the next step.
+      ),
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -109,7 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onMapCreated: _onMapCreated,
                       initialCameraPosition: CameraPosition(
                         target: _center,
-                        zoom: 60.0, //To be set *IMPORTANT*
+                        zoom: 12.0, //To be set *IMPORTANT*
                       ),
                     ),
                   )
