@@ -57,7 +57,7 @@ class _SecondPageState extends State<SecondPage> {
                     LineSeries<ArduinoData, String>(dataSource: chartData,
                         //Line 57 below will implement the data into the graph
                         xValueMapper: (ArduinoData data, _) => data.created_at,
-                        yValueMapper: (ArduinoData data, _) => data.level)
+                        yValueMapper: (ArduinoData data, _) => data.field1)
                   ],
                 );
               } else {
@@ -98,32 +98,41 @@ class _SecondPageState extends State<SecondPage> {
   //This code below is to set the data source to the chart
   List<ArduinoData> chartData = [];
   Future loadArduinoData () async {
-    String jsonString = await getJsonFromThingspeakRestAPI();
-    final jsonResponse = json.decode(jsonString);
+    List<ArduinoData> jsonString = await getJsonFromThingspeakRestAPI();
+
     setState(() {
-      for (Map<String, dynamic> i in jsonResponse) {
-        chartData.add(ArduinoData.fromJson(i));
+      chartData = jsonString;
       }
-    });
+    );
   }
 }
 
-Future<String> getJsonFromThingspeakRestAPI() async {
-  String url = "https://i-woodland-244815-default-rtdb.asia-southeast1.firebasedatabase.app/Feed.json";
+//Retrieving raw data from the Json
+Future <List<ArduinoData>> getJsonFromThingspeakRestAPI() async {
+  String url = "https://api.thingspeak.com/channels/1728190/feeds.json?results=2";
   http.Response response = await http.get(Uri.parse(url));
-  return response.body;
+
+  Map<String, dynamic> user = jsonDecode(response.body);
+
+  List<ArduinoData> data = [];
+  for (var element in user['feeds']){
+    data.add(ArduinoData.fromJson(element));
+  }
+
+  return data;
 }
 
 //Creating a new class to implement a line chart
 class ArduinoData{
-  ArduinoData(this.created_at, this.level);
+  ArduinoData(this.created_at, this.field1);
   final String created_at;
-  final int level;
+  final int field1;
 
+  //mapping the jsonbody retrieved to the class objects
   factory ArduinoData.fromJson(Map<String, dynamic> parsedJson) {
     return ArduinoData(
-      parsedJson['created_at'].toString(),
-      parsedJson['level'],
+      parsedJson['created_at'],
+      int.parse(parsedJson['field1']),
     );
   }
 }

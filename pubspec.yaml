@@ -38,13 +38,14 @@ dependencies:
   json_path: 0.3.1
   page_transition: 2.0.4
   shared_preferences: 2.0.11
-  flutter_native_splash: ^2.1.6
   timeago: 3.1.0
   url_launcher: 6.0.15
-  http: 'any'
-  flutter_background: 'any'
   #above is unecessary
-  syncfusion_flutter_charts: 'any'
+  google_maps_flutter: 'any' #used for google map
+  flutter_native_splash: ^2.1.6 #used for splash screen
+  http: 'any' #this package makes http requests easy
+  flutter_background: 'any' #used for background processing (not used atm)
+  syncfusion_flutter_charts: 'any' #used for chart
 
 
   # The following adds the Cupertino Icons font to your application.

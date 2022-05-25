@@ -1,5 +1,7 @@
-import 'package:app/second.dart';
+import 'package:app/second.dart'; //Importing second.dart lib/page so as to link the two pages (codes at line 80 onwards)
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';//Adding the google map package to implement the map
+
 
 void main() {
   runApp(const MyApp());
@@ -50,6 +52,13 @@ class MyHomePage extends StatefulWidget {
 
 
 class _MyHomePageState extends State<MyHomePage> {
+  late GoogleMapController mapController;
+
+  late LatLng _center = const LatLng(-20.2345422832002, 57.4963461639205); //I had changed this from final to late
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: const Text('Live Monitoring'),
+        title: const Text('Sensor location'),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
@@ -83,19 +92,29 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       body: SafeArea(
+        //adding stack that will contain the google map and other stuff
           child: Stack(
             children: [
               Align(
                   alignment: const AlignmentDirectional(0.05,-0.85),
+                  //adding container that will be used for google map
                   child: Container(
                     width: 340,
                     height: 300,
                     decoration: const BoxDecoration(
                       color: Color(0xFFEEEEEE),
                     ),
+                    //adding the google map with previously set coordinates
+                    child: GoogleMap(
+                      onMapCreated: _onMapCreated,
+                      initialCameraPosition: CameraPosition(
+                        target: _center,
+                        zoom: 60.0, //To be set *IMPORTANT*
+                      ),
+                    ),
                   )
               ),
-              //Inserting a container to containe the stack that will hold the text widget
+              //Inserting a container to contain the stack that will hold the text widget
               Align(
                   alignment: AlignmentDirectional(-0.75,0.2),
                   child: Container(
