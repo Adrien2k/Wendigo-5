@@ -4,7 +4,8 @@ import 'package:flutter/material.dart'; //base package for constructing app
 //unused if ever written before using it in the code of the body.
 import 'package:syncfusion_flutter_charts/charts.dart'; //syncfusion chart package to implement charts in the app
 import 'package:http/http.dart' as http; // This package contains a set of high-level functions and classes that make it easy to consume HTTP resources.
-String s ='https://api.thingspeak.com/channels/1721182/feeds.json?api_key=MQFPBQZ78M4E1F4T&results=3';
+import 'dart:async';
+String s ='https://api.thingspeak.com/channels/1721182/fields/1.json?results=7';
 
 class SecondPage extends StatefulWidget {                                    //
   const SecondPage({Key? key, required this.title}) : super(key: key);       // Those lines are for creating the page
@@ -49,7 +50,16 @@ class _SecondPageState extends State<SecondPage> {
                 //The body makes use of the sfcartesian chart and we will implement and customize it below
 
                 return SfCartesianChart(
-                  primaryXAxis: CategoryAxis(),
+                  primaryXAxis: CategoryAxis(
+                    majorGridLines: const MajorGridLines(width: 0.1),
+                    edgeLabelPlacement: EdgeLabelPlacement.shift,
+                    title: AxisTitle(text: 'Date-Time')
+                  ),
+                  primaryYAxis: NumericAxis(
+                    axisLine: const AxisLine(width: 0),
+                    majorTickLines: const MajorTickLines(size: 0),
+                      title: AxisTitle(text: 'Waterlevel (centimeters)')
+                  ),
                   title: ChartTitle(text: 'Water level'), // title of chart
                   plotAreaBackgroundColor: Colors.white30, //plot area colour
                   borderColor: Colors.white, //bordercolour of the graph
@@ -58,7 +68,7 @@ class _SecondPageState extends State<SecondPage> {
                     LineSeries<ArduinoData, String>(dataSource: chartData,
                         //Line 57 below will implement the data into the graph
                         xValueMapper: (ArduinoData data, _) => data.created_at,
-                        yValueMapper: (ArduinoData data, _) => data.field1)
+                        yValueMapper: (ArduinoData data, _) => data.field2)
                   ],
                 );
               } else {
@@ -95,7 +105,6 @@ class _SecondPageState extends State<SecondPage> {
     );
   }
 
-
   //This code below is to set the data source to the chart
   List<ArduinoData> chartData = [];
   Future loadArduinoData () async {
@@ -126,15 +135,15 @@ Future <List<ArduinoData>> getJsonFromThingspeakRestAPI() async {
 
 //Creating a new class to implement a line chart
 class ArduinoData{
-  ArduinoData(this.created_at, this.field1);
+  ArduinoData(this.created_at, this.field2);
   final String created_at;
-  final int field1;
+  final int field2;
 
   //mapping the jsonbody retrieved to the class objects
   factory ArduinoData.fromJson(Map<String, dynamic> parsedJson) {
     return ArduinoData(
       parsedJson['created_at'],
-      int.parse(parsedJson['field1']),
+      int.parse(parsedJson['field2']),
     );
   }
 }

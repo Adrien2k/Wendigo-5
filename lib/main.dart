@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';//Adding the google map package to implement the map
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-double a = -20.2345422832;
-double b = 57.4963461639;
 
+import 'login.dart';
+double a = -20.23826966605565;
+double b = 57.49531422433988;
 
 void main() {
   runApp(const MyApp());
@@ -20,15 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Wendigo app',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
+
         primarySwatch: Colors.deepPurple,
       ),
       home: const MyHomePage(title: 'MyHomePage'),
@@ -57,7 +50,7 @@ class MyHomePage extends StatefulWidget {
 
 //extracting data for location before creating the map
 Future <List<Location>> getJsonFromThingspeaklocation() async {
-  String url = "https://api.thingspeak.com/channels/1728190/feeds.json?results=2";
+  String url = "https://api.thingspeak.com/channels/1721182/fields/2.json?results=2";
   http.Response response = await http.get(Uri.parse(url));
 
   Map<String, dynamic> user = jsonDecode(response.body);
@@ -112,49 +105,132 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
     //This line below will create a Scaffold widget which can be used to display the graph
-
     return Scaffold(
       drawer: Drawer(
-          child: ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.deepPurple,
-                ),
-                child: Text('Choose your preferred location', style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.deepPurple,
               ),
-              ListTile(
-                title: const Text('UoM'),
-                onTap: () {
-                  a = -20.2345422832;
-                  b = 57.4963461639;
-                  s ='https://api.thingspeak.com/channels/1721182/feeds.json?api_key=MQFPBQZ78M4E1F4T&results=3';
-                  // Update the state of the app.
-                  // ...
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const MyHomePage(title: 'MyHomePage');
-                  }));
-                },
+              child: Text('Choose your preferred location', style: TextStyle(fontSize: 30, color: Colors.white),
               ),
-              ListTile(
-                title: const Text('St.Pierre'),
-                onTap: () {
-                  a = 45.521563;
-                  b = -122.677433;
-                  s ='https://api.thingspeak.com/channels/1721182/feeds.json?api_key=MQFPBQZ78M4E1F4T&results=7';
-                  // Update the state of the app.
-                  // ...
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const MyHomePage(title: 'MyHomePage');
-                  }));
+            ),
+            ListTile(
+              title: const Text('Moka', style: TextStyle(fontSize: 20)),
+              onTap: () {
+                a = -20.23826966605565;
+                b = 57.49531422433988;
+                s ='https://api.thingspeak.com/channels/1721182/fields/2.json?results=7';
+                // Update the state of the app.
+                // ...
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const MyHomePage(title: 'MyHomePage');
+                }));
+              },
+            ),
+            ListTile(
+              title: const Text('Flacq-Rivière du poste', style: TextStyle(fontSize: 20)),
+              onTap: () {
+                a = 45.521563;
+                b = -122.677433;
+                s ='https://api.thingspeak.com/channels/1721182/fields/2.json?results=2';
+                // Update the state of the app.
+                // ...
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const MyHomePage(title: 'MyHomePage');
+                }));
 
-                },
-              ),
-            ],
-          ),// Populate the Drawer in the next step.
+              },
+            ),
+            ListTile(
+              title: const Text('Flacq-Rivière Sèche', style: TextStyle(fontSize: 20)),
+              onTap: () {
+                a = 45.521563;
+                b = -122.677433;
+                s ='https://api.thingspeak.com/channels/1721182/fields/2.json?results=2';
+                // Update the state of the app.
+                // ...
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const MyHomePage(title: 'MyHomePage');
+                }));
+
+              },
+            ),
+            ListTile(
+              title: const Text('Flacq', style: TextStyle(fontSize: 20)),
+              onTap: () {
+                a = 45.521563;
+                b = -122.677433;
+                s ='https://api.thingspeak.com/channels/1721182/fields/2.json?results=2';
+                // Update the state of the app.
+                // ...
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const MyHomePage(title: 'MyHomePage');
+                }));
+
+              },
+            ),
+            ListTile(
+              title: const Text('Flacq', style: TextStyle(fontSize: 20)),
+              onTap: () {
+                a = 45.521563;
+                b = -122.677433;
+                s ='https://api.thingspeak.com/channels/1721182/fields/2.json?results=2';
+                // Update the state of the app.
+                // ...
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const MyHomePage(title: 'MyHomePage');
+                }));
+
+              },
+            ),
+            ListTile(
+              title: const Text('Flacq', style: TextStyle(fontSize: 20)),
+              onTap: () {
+                a = 45.521563;
+                b = -122.677433;
+                s ='https://api.thingspeak.com/channels/1721182/fields/2.json?results=2';
+                // Update the state of the app.
+                // ...
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const MyHomePage(title: 'MyHomePage');
+                }));
+
+              },
+            ),
+            ListTile(
+              title: const Text('Flacq', style: TextStyle(fontSize: 20)),
+              onTap: () {
+                a = 45.521563;
+                b = -122.677433;
+                s ='https://api.thingspeak.com/channels/1721182/fields/2.json?results=2';
+                // Update the state of the app.
+                // ...
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const MyHomePage(title: 'MyHomePage');
+                }));
+
+              },
+            ),
+            ListTile(
+              title: const Text('Flacq', style: TextStyle(fontSize: 20)),
+              onTap: () {
+                a = 45.521563;
+                b = -122.677433;
+                s ='https://api.thingspeak.com/channels/1721182/fields/2.json?results=2';
+                // Update the state of the app.
+                // ...
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const MyHomePage(title: 'MyHomePage');
+                }));
+
+              },
+            ),
+          ],
+        ),// Populate the Drawer in the next step.
       ),
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -190,9 +266,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     //adding the google map with previously set coordinates
                     child: GoogleMap(
                       onMapCreated: _onMapCreated,
+                      tiltGesturesEnabled: false,
                       initialCameraPosition: CameraPosition(
                         target: _center,
-                        zoom: 12.0, //To be set *IMPORTANT*
+                        zoom: 15.0,
+                        //To be set *IMPORTANT*
                       ),
                     ),
                   )
@@ -212,22 +290,61 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: Stack(
                                   children:[
                                     Align(
-                                      alignment: AlignmentDirectional(0, 0),
+                                      alignment: AlignmentDirectional(0.42, -0.40),
                                       child: Icon(Icons.analytics),
                                     ),
                                     Align(
                                       alignment: AlignmentDirectional(0,0.29),
                                       child: Text(
-                                        'Click on the  \'analytics\' icon          in the top right corner of the app bar to view live chart for water level',
+                                        'Click on the  \'analytics\' icon       in the top right corner of the app bar to view live chart for water level',
+                                        style: TextStyle(fontSize: 20),
 
                                       ),
-                                    )
+                                    ),
+
                                   ]
                               )
                           )
                       )
                   )
-              )
+              ),
+              Align(
+                alignment: AlignmentDirectional(0, 0.92),
+                child: Container(
+                  width: 300,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFEEEEEE),
+                  ),
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: AlignmentDirectional(-1.1, 0.06),
+                        child: Text(
+                          '     SMS warning system signup>>>',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(color: Colors.deepPurpleAccent, fontSize: 17),
+                        ),
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional(0.96, 0.03),
+                        child: Container(
+                            height: 50,
+                            padding: const EdgeInsets.fromLTRB(30, 0, 10, 0),
+                            child: ElevatedButton(
+                              child: const Text('Signup'),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return const login();
+                                }));
+                              },
+                            )
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           )
       ),

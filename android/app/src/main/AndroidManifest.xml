@@ -2,7 +2,7 @@
     package="com.example.app">
 
    <application
-        android:label="app"
+        android:label="Wendigo"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
